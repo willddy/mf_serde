@@ -1,4 +1,4 @@
-package com.td.esds.adapters.mainframe;
+package ca.sparkera.adapters.mainframe;
 
 import junit.framework.TestCase;
 

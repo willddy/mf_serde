@@ -1,5 +1,3 @@
-package com.savy3.mapred;
-
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -17,6 +15,8 @@ package com.savy3.mapred;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package ca.sparkera.adapters.mapred;
 
 import org.apache.hadoop.mapred.FileInputFormat;
 import org.apache.hadoop.mapred.FileSplit;
@@ -38,7 +38,6 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.Seekable;
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.LongWritable;
-
 
 /**
  * MainframeVBInputFormat is an input format used to read input files which

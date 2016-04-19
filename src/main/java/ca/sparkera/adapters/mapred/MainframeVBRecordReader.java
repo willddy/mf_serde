@@ -15,8 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.savy3.mapred;
+package ca.sparkera.adapters.mapred;
 
 import java.io.IOException;
 
@@ -38,11 +37,11 @@ public class MainframeVBRecordReader implements
 		RecordReader<LongWritable, BytesWritable> {
 
 	// Make use of the new API implementation to avoid code duplication.
-	private com.savy3.mapreduce.MainframeVBRecordReader reader;
+	private ca.sparkera.adapters.mapreduce.MainframeVBRecordReader reader;
 
 	public MainframeVBRecordReader(Configuration job, FileSplit split)
 			throws IOException {
-		reader = new com.savy3.mapreduce.MainframeVBRecordReader();
+		reader = new ca.sparkera.adapters.mapreduce.MainframeVBRecordReader();
 		reader.initialize(job, split.getStart(), split.getLength(),
 				split.getPath());
 	}

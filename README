@@ -1,0 +1,13 @@
+## TODO
+1. Length after decimal point is wrong. Need to decrease 1, such as "PIC S9(13)V9(2) USAGE COMP-3".
+2. Add option to define all column as string instead of char.
+3. Deal with V to integer only, such as "10 CUSTOMR-NUM PIC S9(5)V USAGE COMP-3."
+
+
+## Features
+1. "-" within field name is replaced by "_" and "." is removed.
+2. Extra spaces, \t\n\r are removed in field definition.
+3. Supported keywords (upper/lower case), PIC, VALUE, REDEFINES, TIMES
+4. Copybook each line should end with ". "
+
+

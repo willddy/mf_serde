@@ -1,5 +1,3 @@
-package com.td.esds.adapters.mainframe;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package com.td.esds.adapters.mainframe;
  * limitations under the License.
  */
 
+package ca.sparkera.adapters.mainframe;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

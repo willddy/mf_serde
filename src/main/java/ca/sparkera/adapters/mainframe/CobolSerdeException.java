@@ -1,5 +1,3 @@
-package com.td.esds.adapters.mainframe;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -17,6 +15,8 @@ package com.td.esds.adapters.mainframe;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package ca.sparkera.adapters.mainframe;
 
 import org.apache.hadoop.hive.serde2.SerDeException;
 
