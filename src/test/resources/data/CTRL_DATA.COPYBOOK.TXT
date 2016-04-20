@@ -1,0 +1,7 @@
+01 WS-OCONTROL-FILEA-FORMAT.
+  10 WS-FILE-NAME                        PIC X(44)  VALUE SPACES.
+  10 FILLER                              PIC X(02)  VALUE '~|'.
+  10 WS-OUT1-CURRENT-DATE                PIC 9(08)  VALUE 0.
+  10 FILLER                              PIC X(02)  VALUE '~|'.
+  10 WS-CNT-FILEA-EDIT                   PIC ZZZZZZ9999.
+  10 FILLER                              PIC X(02)  VALUE '\n'.

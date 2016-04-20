@@ -196,7 +196,7 @@ public class CobolDeserializer {
 			case VARCHAR:
 				return new HiveVarchar(s1, columnProperty.get("length"));
 
-				// to do list
+				// TODO List:
 				// case BINARY:
 				// case DATE:
 				// case CHAR:
