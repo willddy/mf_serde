@@ -2,7 +2,18 @@
 1. Length after decimal point is wrong. Need to decrease 1, such as "PIC S9(13)V9(2) USAGE COMP-3".
 2. Add option to define all column as string instead of char.
 3. Deal with V to integer only, such as "10 CUSTOMR-NUM PIC S9(5)V USAGE COMP-3."
-4. Not support multiple schema in the single copybook yet
+4. Not support multiple schema in the single copybook yet. Here, need redefine to modify copybook.
+5. ''Cleaning'' the copybook
+    comments are skipped,
+    Multi-line COBOL declaration are concatenated in one line.
+    PICTURE clauses are replaced by PIC,
+    SIGN clauses are ignored,
+    IS clauses are ignored,
+    NATIVE clauses are skipped,
+    X(4) and 9(6) symbols are replaced respectively by XXXX and 999999,
+    Final dot of COBOL declarations is suppressed,
+    COBOL declarations are capitalized.2.1
+
 
 
 ## Features
@@ -10,5 +21,8 @@
 2. Extra spaces, \t\n\r are removed in field definition.
 3. Supported keywords (upper/lower case), PIC, VALUE, REDEFINES, TIMES
 4. Copybook each line should end with ". "
+
+
+
 
 

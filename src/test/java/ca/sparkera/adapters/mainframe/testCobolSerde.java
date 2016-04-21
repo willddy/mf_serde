@@ -19,7 +19,7 @@ public class testCobolSerde extends TestCase {
 	Configuration conf = new Configuration();
 	Properties tbl = new Properties();
 	
-	public void testDeserializeWritable_hardcode_01() throws SerDeException {
+	public void testDeserializeWritable_hardcode() throws SerDeException {
         try {
                 tbl.setProperty("cobol.layout.literal",
                         "01 WS-OCONTROL-FILEA-FORMAT. " +
@@ -35,9 +35,9 @@ public class testCobolSerde extends TestCase {
                         "EPSA.C.D.BEPSBU.JEPSFB02.DL(0)              ~|20160404~|0000000340\\n").getBytes("IBM-1047")))
                         .toString().replaceAll("\\[|\\]|( )+","").split(",");
 
-                assertEquals(result[0],"EPSA.C.D.BEPSBU.JEPSFB02.DL(0)");
-                assertEquals(result[2],"20160404");
-                assertEquals(result[4],"340");
+                assertEquals(result[0], "EPSA.C.D.BEPSBU.JEPSFB02.DL(0)");
+                assertEquals(result[2], "20160404");
+                assertEquals(result[4], "340");
 
         } catch (UnsupportedEncodingException uee) {
             uee.printStackTrace();
@@ -45,38 +45,31 @@ public class testCobolSerde extends TestCase {
 
     }
 
-    public void testDeserializeWritable_hardcode_02() throws SerDeException {
-        try {
-            tbl.setProperty("cobol.layout.literal",
-                            "01  DCLPS-HRP-EE-ORGUNIT. " +
-                                    "05 REC-DTL. " +
-                                    "   10 EMPLID           PIC X(11). " +
-                                    "   10 EMPL-RCD         PIC S9(04) USAGE COMP. " +
-                                    "   10 HRP-ORGUNIT-ID   PIC X(10). " +
-                                    "   10 FILLER           PIC X(14). " +
-                                    "05 REC-TRL REDEFINES REC-DTL. " +
-                                    "   10 REC-TYPE              PIC X(07). " +
-                                    "       88 TRAILER-REC       VALUE \"TRAILER\". " +
-                                    "   10 TRL-TIMESTAMP         PIC X(19). " +
-                                    "   10 TRL-DETAIL-COUNT      PIC 9(11). "
-            );
-            tbl.setProperty("fb.length","37");
-            csd.initialize(conf, tbl);
-            String[] result = csd.deserialize(new BytesWritable((
-                    "2869217    000000000846              ").getBytes("IBM-1047")))
-                    .toString().replaceAll("\\[|\\]|( )+","").split(",");
-            System.out.println(result.toString());
+    public void testDeserializeWritable_controlFile() throws SerDeException {
 
-        } catch (UnsupportedEncodingException uee) {
-            uee.printStackTrace();
-        }
+        Map<Integer, String[]> resultSet = testDeserializeWritable_FromFile(
+                "src/test/resources/data/CTRL_DATA.DAT",
+                "src/test/resources/data/CTRL_DATA.COPYBOOK.TXT", 68, -1);
+        assertEquals(resultSet.get(0)[0], "EPSP.C.D.BEPSBU.JEPSFB02.DL(0)");
+        assertEquals(resultSet.get(0)[2], "20160330");
+        assertEquals(resultSet.get(0)[4], "339");
+        assertEquals(resultSet.get(1)[0], "EPSP.C.D.BEPSBUA.JEPSFB02.DL(0)");
+        assertEquals(resultSet.get(1)[2], "20160330");
+        assertEquals(resultSet.get(1)[4], "1186");
     }
 
-    public void testDeserializeWritable_FromFile_01() throws SerDeException {
+    public void testDeserializeWritable_fileWithHDRTRL() throws SerDeException {
 
         testDeserializeWritable_FromFile(
-                "src/test/resources/data/CTRL_DATA.DAT",
-                "src/test/resources/data/CTRL_DATA.COPYBOOK.TXT", 68);
+                "src/test/resources/data/DATA_WITH_TRL.DAT",
+                "src/test/resources/data/DATA_WITH_TRL.COPYBOOK.TXT", 37, 30);
+    }
+
+    public void testDeserializeWritable_DataWithHeaderTrailer() throws SerDeException {
+
+        testDeserializeWritable_FromFile(
+                "src/test/resources/data/DATA_WITH_HDRTRL.DAT",
+                "src/test/resources/data/DATA_WITH_HDRTRL.COPYBOOK.TXT", 147, 3);
     }
 
     /**
@@ -84,10 +77,14 @@ public class testCobolSerde extends TestCase {
      * @param testFilePath
      * @param copybookpath
      * @param recordLength
+     * @param rowsToTest, -1 - all rows.
      * @return Map
      * @throws SerDeException
      */
-    public Map<Integer, String[]> testDeserializeWritable_FromFile(String testFilePath, String copybookpath, Integer recordLength) throws SerDeException {
+    public Map<Integer, String[]> testDeserializeWritable_FromFile(String testFilePath,
+                                                                   String copybookpath,
+                                                                   Integer recordLength,
+                                                                   Integer rowsToTest) throws SerDeException {
 
         FileInputStream fi = null;
         FileChannel fc = null;
@@ -108,14 +105,16 @@ public class testCobolSerde extends TestCase {
             byte[] oneRow = new byte[recordLength];
             while (true) {
                 buffer.clear();
-                if(fc.read(buffer) == -1) break;
+                if(fc.read(buffer) == -1 || rowsToTest == 0) break;
                 buffer.flip();
                 buffer.position(0);
+                buffer.limit(recordLength);
                 buffer.get(oneRow, 0, recordLength);
                 result = csd.deserialize(new BytesWritable(oneRow)).toString().replaceAll("\\[|\\]|( )+","").split(",");
                 System.out.println(Arrays.toString(result));
                 resultSet.put(key, result);
                 key ++;
+                rowsToTest --;
             }
             return resultSet;
 
